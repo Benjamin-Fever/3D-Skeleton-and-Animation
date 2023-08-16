@@ -50,6 +50,9 @@ private:
 	// geometry
 	basic_model m_model;
 
+	// skeleton
+	skeleton_model m_skeleton;
+
 public:
 	// setup
 	Application(GLFWwindow *);

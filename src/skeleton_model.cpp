@@ -26,5 +26,10 @@ void skeleton_model::draw(const mat4 &view, const mat4 &proj) {
 
 
 void skeleton_model::drawBone(const mat4 &parentTransform, int boneid) {
-	// TODO
+	skeleton_bone &bone = skel.bones[boneid];
+	mat4 boneTransform = parentTransform * bone.basis;
+	
+	for (int i = 0; i < bone.children.size(); i++) {
+		drawBone(boneTransform, bone.children[i]);
+	}
 }
