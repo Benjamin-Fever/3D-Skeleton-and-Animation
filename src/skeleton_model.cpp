@@ -27,9 +27,19 @@ void skeleton_model::draw(const mat4 &view, const mat4 &proj) {
 
 void skeleton_model::drawBone(const mat4 &parentTransform, int boneid) {
 	skeleton_bone &bone = skel.bones[boneid];
-	mat4 boneTransform = parentTransform * bone.basis;
+	mat4 boneTransform = parentTransform;
+	boneTransform *= mat4(vec4(1,0,0,bone.basis.x), vec4(0,1,0, bone.basis.y), vec4(0, 0, 1, bone.basis.z), vec4(0,0,0,1)); // Translate
+	boneTransform *= mat4(vec4(0.5,0,0,0), vec4(0,0.5,0,0), vec4(0,0,1.5,0), vec4(0,0,0,1)); // Scale
 	
-	for (int i = 0; i < bone.children.size(); i++) {
+	boneTransform *= mat4(); // Rotation
+	if (bone.length > 0){
+		// Draw the bone
+		glUniformMatrix4fv(glGetUniformLocation(shader, "uModelViewMatrix"), 1, false, value_ptr(boneTransform));
+		glUniform3fv(glGetUniformLocation(shader, "uColor"), 1, value_ptr(vec3{1,0,0}));
+		drawCylinder();
+	}
+
+	for (int i = 0; i < bone.children.size(); i++){
 		drawBone(boneTransform, bone.children[i]);
 	}
 }
