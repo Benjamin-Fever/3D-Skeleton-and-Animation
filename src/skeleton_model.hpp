@@ -11,6 +11,8 @@ class skeleton_model {
 private:
 	// recursive helper method
 	void drawBone(const glm::mat4 &view, int boneid);
+	void drawJoint(const glm::mat4 &parentTransform);
+	void drawBonePart(const glm::mat4 &parentTransform, skeleton_bone &bone);
 
 public:
 	GLuint shader = 0;

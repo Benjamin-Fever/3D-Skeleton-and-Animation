@@ -46,7 +46,7 @@ Application::Application(GLFWwindow *window) : m_window(window) {
 	m_model.color = vec3(1, 0, 0);
 
 	m_skeleton.shader = shader;
-	m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//testskeleton1.asf"));
+	m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//testskeleton2.asf"));
 
 }
 
