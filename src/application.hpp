@@ -9,6 +9,7 @@
 #include "opengl.hpp"
 #include "cgra/cgra_mesh.hpp"
 #include "skeleton_model.hpp"
+#include "spline_model.hpp"
 
 
 // Basic model that holds the shader, mesh and transform for drawing.
@@ -23,7 +24,6 @@ struct basic_model {
 
 	void draw(const glm::mat4 &view, const glm::mat4 proj);
 };
-
 
 // Main application class
 //
@@ -52,6 +52,12 @@ private:
 
 	// skeleton
 	skeleton_model m_skeleton;
+
+	// spline
+	spline_model m_spline;
+
+	bool showSkeleton;
+	bool showSpline;
 
 public:
 	// setup

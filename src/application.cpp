@@ -33,7 +33,6 @@ void basic_model::draw(const glm::mat4 &view, const glm::mat4 proj) {
 	mesh.draw(); // draw
 }
 
-
 Application::Application(GLFWwindow *window) : m_window(window) {
 	
 	shader_builder sb;
@@ -48,6 +47,19 @@ Application::Application(GLFWwindow *window) : m_window(window) {
 	m_skeleton.shader = shader;
 	m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//priman.asf"));
 
+	m_spline.shader = shader;
+	m_spline.points = std::vector<vec3>();
+	m_spline.points.push_back(glm::vec3(-54, -25, -18));
+    m_spline.points.push_back(glm::vec3(-30, -4, -30));
+    m_spline.points.push_back(glm::vec3(0, 0, 42));
+    m_spline.points.push_back(glm::vec3(0, 0, -32));
+    m_spline.points.push_back(glm::vec3(33, 37, 0));
+    m_spline.points.push_back(glm::vec3(66, -12, 0));
+    m_spline.points.push_back(glm::vec3(0, -37, 0));
+    m_spline.points.push_back(glm::vec3(100, -79, -2));
+
+	showSkeleton = true;
+	showSpline = false;
 }
 
 
@@ -84,8 +96,9 @@ void Application::render() {
 
 
 	// draw the model
-	//m_model.draw(view, proj);
-	m_skeleton.draw(view, proj);
+	if (showSkeleton) m_skeleton.draw(view, proj);
+
+	if (showSpline) m_spline.draw(view, proj);
 }
 
 
@@ -93,7 +106,7 @@ void Application::renderGUI() {
 
 	// setup window
 	ImGui::SetNextWindowPos(ImVec2(5, 5), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiSetCond_Once);
 	ImGui::Begin("Options", 0);
 
 	// display current camera parameters
@@ -112,15 +125,52 @@ void Application::renderGUI() {
 
 	
 	ImGui::Separator();
+	ImGui::Text("Skeleton");
+	ImGui::Checkbox("Show Skeleton", &showSkeleton);
+	ImGui::Checkbox("Show Spline", &showSpline);
+	ImGui::Separator();
 
-	// example of how to use input boxes
-	static float exampleInput;
-	if (ImGui::InputFloat("example input", &exampleInput)) {
-		cout << "example input changed to " << exampleInput << endl;
+	ImGui::Text("Poses");
+	if (ImGui::Button("Default")){
+		m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//priman.asf"));
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Dab")){
+		m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//dab.asf"));
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Flex")){
+		m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//flex.asf"));
+	}
+	if (ImGui::Button("Kick")){
+		m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//kick.asf"));
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Walking")){
+		m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//walking.asf"));
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Sitting")){
+		m_skeleton.skel = skeleton_data(CGRA_SRCDIR + std::string("//res//assets//sitting.asf"));
+	}
+	ImGui::Separator();
+	ImGui::Text("Spline Points");
+	ImGui::SameLine();
+	if (ImGui::Button("Add")){
+		m_spline.points.push_back(vec3(0, 0, 0));
+	}
+	for (int i = 0; i < (int)m_spline.points.size(); i++){
+		ImGui::SliderFloat3(("##" + to_string(i)).c_str(), value_ptr(m_spline.points[i]), -100,100);
+		ImGui::SameLine();
+		if (ImGui::Button(("-##" + to_string(i)).c_str())){
+			m_spline.points.erase(m_spline.points.begin() + i);
+		}
 	}
 
 	// finish creating window
 	ImGui::End();
+
+	
 }
 
 

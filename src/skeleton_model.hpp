@@ -14,10 +14,10 @@ private:
 	void drawJoint(const glm::mat4 &parentTransform);
 	void drawBonePart(const glm::mat4 &parentTransform, skeleton_bone &bone);
 
-    void drawAxis(const glm::mat4 &view, skeleton_bone &bone);
-    void drawXAxis(const glm::mat4 &view, skeleton_bone &bone);
-    void drawYAxis(const glm::mat4 &view, skeleton_bone &bone);
-    void drawZAxis(const glm::mat4 &view, skeleton_bone &bone);
+    void drawAxis(const glm::mat4 &parentTransform, skeleton_bone &bone);
+    void drawXAxis(const glm::mat4 &parentTransform);
+    void drawYAxis(const glm::mat4 &parentTransform);
+    void drawZAxis(const glm::mat4 &parentTransform);
 
 public:
 	GLuint shader = 0;
